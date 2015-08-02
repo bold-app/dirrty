@@ -19,14 +19,14 @@ Usage
 Options
 --------
 
-*preventLeaving* true | false
-*leavingMessage*  Message to show when user tries to leave with a dirty form
+- `preventLeaving` true | false
+- `leavingMessage` Message to show when user tries to leave with a dirty form
 
 Events
 ------
 
-*dirty* triggered on the form when it gets dirty
-*clean* triggered on the form when it gets clean again
+- `dirty` triggered on the form when it gets dirty
+- `clean` triggered on the form when it gets clean again
 
 Methods
 ---------
