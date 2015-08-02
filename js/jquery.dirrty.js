@@ -182,8 +182,6 @@ var singleDs = [];
  	$.fn.dirrty.defaults = {
  		preventLeaving: true,
  		leavingMessage: "You have unsaved changes",
- 		onDirty: function(){},  //This function is fired when the form gets dirty
- 		onClean: function(){}   //This funciton is fired when the form gets clean again
  	};
 
  })(jQuery);

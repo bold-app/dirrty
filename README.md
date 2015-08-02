@@ -21,8 +21,12 @@ Options
 
 *preventLeaving* true | false  
 *leavingMessage*  Message to show when user tries to leave with a dirty form  
-*onDirty* Function to be triggered when the form gets dirty  
-*onClean* Function to be triggered when the form gets clean again  
+
+Events
+------
+
+*dirty* triggered on the form when it gets dirty
+*clean* triggered on the form when it gets clean again
 
 Methods
 ---------
