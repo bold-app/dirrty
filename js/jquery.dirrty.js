@@ -38,14 +38,14 @@ var singleDs = [];
 
     saveInitialValues: function(){
       this.form.find("input, select, textarea").each( function(){
-        $(this).attr("data-dirrty-initial-value", $(this).val());
+        $(this).data("dirrty-initial-value", $(this).val());
       });
 
       this.form.find("input[type=checkbox], input[type=radio]").each( function(){
         if($(this).is(":checked")){
-          $(this).attr("data-dirrty-initial-value", "checked");
+          $(this).data("dirrty-initial-value", "checked");
         }else{
-          $(this).attr("data-dirrty-initial-value", "unchecked");
+          $(this).data("dirrty-initial-value", "unchecked");
         }
       });
     },
@@ -86,25 +86,25 @@ var singleDs = [];
     checkValues: function(){
       var d = this;
       this.form.find("input, select, textarea").each( function(){
-        var initialValue = $(this).attr("data-dirrty-initial-value");
+        var initialValue = $(this).data("dirrty-initial-value");
         if($(this).val() != initialValue){
-          $(this).attr("data-is-dirrty", "true");
+          $(this).data("is-dirrty", true);
         }else{
-          $(this).attr("data-is-dirrty", "false");
+          $(this).data("is-dirrty", false);
         }
       });
       this.form.find("input[type=checkbox], input[type=radio]").each( function(){
-        var initialValue = $(this).attr("data-dirrty-initial-value");
+        var initialValue = $(this).data("dirrty-initial-value");
         if($(this).is(":checked") && initialValue != "checked"
           || !$(this).is(":checked") && initialValue == "checked"){
-          $(this).attr("data-is-dirrty", "true");
+          $(this).data("is-dirrty", true);
         }else{
-          $(this).attr("data-is-dirrty", "false");
+          $(this).data("is-dirrty", false);
         }
       });
       var isDirty = false;
       this.form.find("input, select, textarea").each( function(){
-        if( $(this).attr("data-is-dirrty") == "true" ){
+        if( $(this).data("is-dirrty") ){
           isDirty = true;
         }
       });
