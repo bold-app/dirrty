@@ -1,7 +1,7 @@
-/* 
+/*
  * Dirrty v0.1.7
- * jquery plugin to detect when the fields of a form are modified 
- * (c)2014 Rubén Torres - rubentdlh@gmail.com
+ * jquery plugin to detect when the fields of a form are modified
+ * (c)2014 RubÃ©n Torres - rubentdlh@gmail.com
  * Released under the MIT license
  */
 
@@ -10,178 +10,178 @@ var singleDs = [];
 
 (function($) {
 
- 	function getSingleton(id){
- 		var result;
- 		$(singleDs).each(function(){
-			if($(this)[0].id == id){ 
-				result = $(this)[0];
-			}
- 		});
- 		return result;
- 	}
+  function getSingleton(id){
+    var result;
+    $(singleDs).each(function(){
+      if($(this)[0].id == id){
+        result = $(this)[0];
+      }
+    });
+    return result;
+  }
 
- 	function Dirrty(form, options){
- 		this.form=form;
- 		this.isDirty=false;
- 		this.options=options;
- 		this.history = ["clean", "clean"]; //Keep track of last statuses
- 		this.id=$(form).attr("id");
- 		singleDs.push(this);
- 	}
+  function Dirrty(form, options){
+    this.form=form;
+    this.isDirty=false;
+    this.options=options;
+    this.history = ["clean", "clean"]; //Keep track of last statuses
+    this.id=$(form).attr("id");
+    singleDs.push(this);
+  }
 
- 	Dirrty.prototype = {
+  Dirrty.prototype = {
 
- 		init: function(){
- 			this.saveInitialValues();
- 			this.setEvents();
- 		},
+    init: function(){
+      this.saveInitialValues();
+      this.setEvents();
+    },
 
- 		saveInitialValues: function(){
- 			this.form.find("input, select, textarea").each( function(){
- 				$(this).attr("data-dirrty-initial-value", $(this).val());
- 			});
+    saveInitialValues: function(){
+      this.form.find("input, select, textarea").each( function(){
+        $(this).attr("data-dirrty-initial-value", $(this).val());
+      });
 
- 			this.form.find("input[type=checkbox], input[type=radio]").each( function(){
- 				if($(this).is(":checked")){
- 					$(this).attr("data-dirrty-initial-value", "checked");
- 				}else{
- 					$(this).attr("data-dirrty-initial-value", "unchecked");
- 				}
- 			});
- 		},
+      this.form.find("input[type=checkbox], input[type=radio]").each( function(){
+        if($(this).is(":checked")){
+          $(this).attr("data-dirrty-initial-value", "checked");
+        }else{
+          $(this).attr("data-dirrty-initial-value", "unchecked");
+        }
+      });
+    },
 
- 		setEvents: function(){
- 			var d = this;
- 			
- 			$(document).ready( function(){
+    setEvents: function(){
+      var d = this;
 
- 				d.form.on('submit', function(){
- 					d.submitting = true;
- 				});
+      $(document).ready( function(){
 
- 				if(d.options.preventLeaving){
-					$(window).on('beforeunload', function(){ 
-						if(d.isDirty && !d.submitting){
-							return d.options.leavingMessage;
-						}
-					});
-				}
+        d.form.on('submit', function(){
+          d.submitting = true;
+        });
 
-				d.form.find("input, select").change(function(){
-					d.checkValues();
-				});
+        if(d.options.preventLeaving){
+          $(window).on('beforeunload', function(){
+            if(d.isDirty && !d.submitting){
+              return d.options.leavingMessage;
+            }
+          });
+        }
 
-				d.form.find("input, textarea").on('keyup keydown blur', function(){
-					d.checkValues();
-				});
+        d.form.find("input, select").change(function(){
+          d.checkValues();
+        });
 
-				//fronteend's icheck support
-				d.form.find("input[type=radio], input[type=checkbox]").on('ifChecked', function(event){
-					d.checkValues();
-				});
+        d.form.find("input, textarea").on('keyup keydown blur', function(){
+          d.checkValues();
+        });
 
-			});
- 		},
+        //fronteend's icheck support
+        d.form.find("input[type=radio], input[type=checkbox]").on('ifChecked', function(event){
+          d.checkValues();
+        });
 
- 		checkValues: function(){
- 			var d = this;
- 			this.form.find("input, select, textarea").each( function(){
- 				var initialValue = $(this).attr("data-dirrty-initial-value");
- 				if($(this).val() != initialValue){
- 					$(this).attr("data-is-dirrty", "true");
- 				}else{
- 					$(this).attr("data-is-dirrty", "false");
- 				}
- 			});
- 			this.form.find("input[type=checkbox], input[type=radio]").each( function(){
- 				var initialValue = $(this).attr("data-dirrty-initial-value");
- 				if($(this).is(":checked") && initialValue != "checked"
- 					|| !$(this).is(":checked") && initialValue == "checked"){
- 					$(this).attr("data-is-dirrty", "true");	
-				}else{
-					$(this).attr("data-is-dirrty", "false");	
-				}					
- 			});
- 			var isDirty = false;
- 			this.form.find("input, select, textarea").each( function(){
- 				if( $(this).attr("data-is-dirrty") == "true" ){
- 					isDirty = true;
- 				}
- 			});
- 			if(isDirty){
- 				d.setDirty();
- 			}else{
-				d.setClean();
- 			}
+      });
+    },
 
- 			d.fireEvents();
- 		},
+    checkValues: function(){
+      var d = this;
+      this.form.find("input, select, textarea").each( function(){
+        var initialValue = $(this).attr("data-dirrty-initial-value");
+        if($(this).val() != initialValue){
+          $(this).attr("data-is-dirrty", "true");
+        }else{
+          $(this).attr("data-is-dirrty", "false");
+        }
+      });
+      this.form.find("input[type=checkbox], input[type=radio]").each( function(){
+        var initialValue = $(this).attr("data-dirrty-initial-value");
+        if($(this).is(":checked") && initialValue != "checked"
+          || !$(this).is(":checked") && initialValue == "checked"){
+          $(this).attr("data-is-dirrty", "true");
+        }else{
+          $(this).attr("data-is-dirrty", "false");
+        }
+      });
+      var isDirty = false;
+      this.form.find("input, select, textarea").each( function(){
+        if( $(this).attr("data-is-dirrty") == "true" ){
+          isDirty = true;
+        }
+      });
+      if(isDirty){
+        d.setDirty();
+      }else{
+        d.setClean();
+      }
 
- 		fireEvents: function(){
+      d.fireEvents();
+    },
 
- 			if(this.isDirty && this.wasJustClean()){
- 				this.form.trigger("dirty");
- 			}
+    fireEvents: function(){
 
- 			if(!this.isDirty && this.wasJustDirty()){
- 				this.form.trigger("clean");
- 			}
- 		},
+      if(this.isDirty && this.wasJustClean()){
+        this.form.trigger("dirty");
+      }
 
- 		setDirty: function(){
- 			this.isDirty = true;
- 			this.history[0] = this.history[1];
- 			this.history[1] = "dirty";
- 		},
+      if(!this.isDirty && this.wasJustDirty()){
+        this.form.trigger("clean");
+      }
+    },
 
- 		setClean: function(){
- 			this.isDirty = false;
- 			this.history[0] = this.history[1];
- 			this.history[1] = "clean";
- 		},
+    setDirty: function(){
+      this.isDirty = true;
+      this.history[0] = this.history[1];
+      this.history[1] = "dirty";
+    },
 
- 		//Lets me know if the previous status of the form was dirty
- 		wasJustDirty: function(){
- 			return (this.history[0] == "dirty");
- 		},
+    setClean: function(){
+      this.isDirty = false;
+      this.history[0] = this.history[1];
+      this.history[1] = "clean";
+    },
 
- 		//Lets me know if the previous status of the form was clean
- 		wasJustClean: function(){
- 			return (this.history[0] == "clean");
- 		}
- 	}
+    //Lets me know if the previous status of the form was dirty
+    wasJustDirty: function(){
+      return (this.history[0] == "dirty");
+    },
 
- 	$.fn.dirrty = function(options) {
+    //Lets me know if the previous status of the form was clean
+    wasJustClean: function(){
+      return (this.history[0] == "clean");
+    }
+  }
 
-		if (/^(isDirty)$/i.test(options)) {
-			//Check if we have an instance of dirrty for this form
-			var d = getSingleton($(this).attr("id"));
+  $.fn.dirrty = function(options) {
 
-			if(!d){
-				var d = new Dirrty($(this), options);
-				d.init();
-			}
-			switch(options){
-				case 'isDirty':
-					return d.isDirty; 
-					break;
-			}
+    if (/^(isDirty)$/i.test(options)) {
+      //Check if we have an instance of dirrty for this form
+      var d = getSingleton($(this).attr("id"));
 
-		}else if (typeof options == 'object' || !options) {
-			
-			return this.each(function(){
-				options = $.extend({}, $.fn.dirrty.defaults, options);
- 				var dirrty = new Dirrty($(this), options);
- 				dirrty.init();
-			});	
-			
-		}
+      if(!d){
+        var d = new Dirrty($(this), options);
+        d.init();
+      }
+      switch(options){
+        case 'isDirty':
+          return d.isDirty;
+          break;
+      }
 
- 	}
+    }else if (typeof options == 'object' || !options) {
 
- 	$.fn.dirrty.defaults = {
- 		preventLeaving: true,
- 		leavingMessage: "You have unsaved changes",
- 	};
+      return this.each(function(){
+        options = $.extend({}, $.fn.dirrty.defaults, options);
+        var dirrty = new Dirrty($(this), options);
+        dirrty.init();
+      });
+
+    }
+
+  }
+
+  $.fn.dirrty.defaults = {
+    preventLeaving: true,
+    leavingMessage: "You have unsaved changes",
+  };
 
  })(jQuery);
